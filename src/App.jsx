@@ -3,6 +3,7 @@ import './App.css'
 import * as trackService from './services/trackService.js'
 import Tracklist from './components/Tracklist/Tracklist.jsx';
 import NowPlaying from './components/NowPlaying/NowPlaying.jsx';
+import TrackForm from './components/TrackForm/TrackForm.jsx'
 
 function App() {
     const [tracks, setTracks] = useState([]);
@@ -69,11 +70,12 @@ function App() {
 	return (
 		<main>
 			<h1>Jukebox lite</h1>
-            <Tracklist tracks={tracks} crud={{handleDelete, handleEdit}} handleSelectSong={handleSelectSong} nowPlaying={nowPlaying} />
-            <NowPlaying track={nowPlaying} isPlaying={isPlaying} setIsPlaying={setIsPlaying} crud={{handleDelete, handleEdit}} />
+            {!showEditModal && <Tracklist tracks={tracks} crud={{handleDelete, handleEdit}} handleSelectSong={handleSelectSong} nowPlaying={nowPlaying} />}
+            {!showEditModal && <NowPlaying track={nowPlaying} isPlaying={isPlaying} setIsPlaying={setIsPlaying} crud={{handleDelete, handleEdit}} />}
+            {showEditModal && <TrackForm track={selected} />}
             {/* showEditModal && <EditModal track={selected} handleUpdate={handleUpdate} /> */}
 		</main>
 	)
 }
 
-export default App
+export default App;
