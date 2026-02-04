@@ -1,0 +1,119 @@
+section#now-playing {
+    position:fixed;
+    width:100%;
+    bottom:0;
+    /* background-color: #111; */
+    background-image: linear-gradient(to top right, #111 55%, #123);
+}
+
+#now-playing-banner {
+    height:80px;
+    width: 100%;
+    /* background-color: #111; */
+    background-image: linear-gradient(to bottom right, #111 55%, #123);
+    display:grid;
+    grid-template: 
+        "progress progress" 10px
+        "text playpause" auto / auto 80px;
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+
+    & .progress-bar {
+        grid-area:progress;
+        transform:translateY(-120%);
+        & input {width:100%;}
+    }
+
+    & header {
+        grid-area:text;
+        display:grid;
+        grid-template:auto / 50px auto 50px;
+        gap:0 1em;
+        padding:0 12px;
+
+        & .album-art {
+            height:50px;
+            aspect-ratio: 1/1;
+            border:1px solid lightblue;
+        }
+
+        & .text {
+            text-align: left;
+
+            & h5 {
+                margin: 0;
+                color: #f73;
+                font-size: 12pt;
+            }
+        }
+    }
+    & header:hover {cursor: grab;}
+
+    & .play-pause {
+        grid-area:playpause;
+        font-size: 24pt;
+    }
+}
+
+#now-playing-collapse {
+    height:0;
+    overflow:hidden;
+    transition:height 300ms cubic-bezier(0, 0.9, 0.75, 0.86);
+
+    &.expanded {
+        height:calc(100vh - 80px);
+    }
+}
+
+#now-playing-expanded {
+    height:calc(100vh - 80px);
+    width:100%;
+
+    & .album-art {
+        background-image: attr(data-url);
+        background-size: contain;
+        height:calc(100% - 80px - 50px);
+    }
+
+    & .progress-block {
+        width:99%;
+        display:grid;
+        grid-template:
+            "current . duration" 14pt
+            "prog prog prog" auto / 30px auto 30px;
+
+        & .current {grid-area:current;}
+        & .duration {grid-area:duration;}
+        & .progress-bar {
+            grid-area:prog;
+            & input {width:100%; margin:12px 0;}
+        }
+    }
+
+    & .playback-controls {
+        display:flex;
+        justify-content: space-between;
+
+        & .center {
+            display: flex;
+            gap: 2em;
+            font-size:18pt;
+
+            & button {
+                padding:3px;
+                width:60px;
+                aspect-ratio: 1/1;
+                border:2px solid white;
+                border-radius: 50%;
+            }
+            & button:hover {background-color:#444;}
+            & button:active {background-color:#555;}
+        }
+
+        & .context-menu ul {
+            transform: translate(-60%, -170%);
+        }
+    }
+}
+
+.play-pause:hover {cursor:pointer;}

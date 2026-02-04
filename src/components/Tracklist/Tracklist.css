@@ -1,0 +1,61 @@
+section#tracklist {
+    width:100%;
+
+    & ul.tracklist {
+        display:flex;
+        flex-direction:column;
+        border-bottom:1px solid #aaa3;
+
+        & li.tracklist {
+            padding:18px 12px;
+            display: grid;
+            grid-template: auto / auto 3fr auto;
+            border-top:1px solid #aaa3;
+            background-color:transition;
+            transition: background-color 200ms ease-in-out;
+
+            & .text {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding-left: 12px;
+                text-align: left;
+            }
+            & h5 {
+                margin: 0;
+                color: #f73;
+            }
+        }
+        & li.tracklist:hover {background-color:#333; cursor:pointer;}
+        & li.tracklist:active {background-color:#555;}
+        & li.now-playing {background-color: #444;}
+    }
+}
+
+div.img {
+    height: 36pt;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: white;
+
+    & div {
+        height: 36pt;
+        aspect-ratio: 1/1;
+        background-image: url(https://cdn-icons-png.flaticon.com/512/651/651717.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 60%;
+        background-color: #fff;
+
+        &:has(img) {
+            background-image:none;
+            background-color: #444;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            & img {height:30px;}
+        }
+    }
+}

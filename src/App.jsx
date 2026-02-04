@@ -2,10 +2,13 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import * as trackService from './services/trackService.js'
 import Tracklist from './components/Tracklist/Tracklist.jsx';
+import NowPlaying from './components/NowPlaying/NowPlaying.jsx';
 
 function App() {
     const [tracks, setTracks] = useState([]);
-    const [nowPlaying, setNowPlaying] = useState();
+    const initNowPlaying = {title:'', artist:'', duration:'0:00', albumArt:''};
+    const [nowPlaying, setNowPlaying] = useState(initNowPlaying);
+    const [isPlaying, setIsPlaying] = useState(false);
     const [selected, setSelected] = useState();
     const [showEditModal, setShowEditModal] = useState(false);
 
@@ -15,7 +18,11 @@ function App() {
             try {
                 const data = await trackService.index();
                 console.log("@App | Data: ", data)
-                setTracks(data)
+                setTracks(data);
+                if (data.length > 0) {
+                    handleSelectSong(data[0]);
+                    setIsPlaying(false);
+                };
             } catch (err) {
                 console.error(err)
             }
@@ -33,9 +40,9 @@ function App() {
             console.error(err)
         }
     };
-    const handleEdit = (id) => {
-        console.log("@handleEdit", id);
-        setSelected(tracks.find(track => track._id===id));
+    const handleEdit = (track) => {
+        console.log("@handleEdit", track);
+        setSelected(track);
         setShowEditModal(true);
     }
     const handleUpdate = async (track) => {
@@ -50,12 +57,20 @@ function App() {
             console.error(err);
         }
     };
+    const handleSelectSong = (track) => {
+        setNowPlaying({
+            ...track,
+            duration:track?.duration || '0:00',
+            albumArt:track?.albumArt || ''
+        });
+        setIsPlaying(true);
+    };
 
 	return (
 		<main>
 			<h1>Jukebox lite</h1>
-            <Tracklist tracks={tracks} crud={{handleDelete, handleEdit}} />
-            {/* mode==='nowPlaying' && <NowPlaying track={nowPlaying} /> */}
+            <Tracklist tracks={tracks} crud={{handleDelete, handleEdit}} handleSelectSong={handleSelectSong} nowPlaying={nowPlaying} />
+            <NowPlaying track={nowPlaying} isPlaying={isPlaying} setIsPlaying={setIsPlaying} crud={{handleDelete, handleEdit}} />
             {/* showEditModal && <EditModal track={selected} handleUpdate={handleUpdate} /> */}
 		</main>
 	)

@@ -1,0 +1,35 @@
+.context-menu {
+    display: block;
+
+    & button {
+        height: 3em;
+        aspect-ratio: 1/1;
+        padding:3px;
+        background-color:transparent;
+        & img {height:50%;}
+    }
+    & button:focus + ul {display: block;}
+
+    & ul.context-menu {
+        display: none;
+        position:absolute;
+        transform:translateX(-70%);
+        width:100px;
+        background-color: #444;
+        border-radius: 6px;
+        overflow: hidden;
+        box-shadow:0 0 6px #0002;
+
+        & li {
+            padding:6px;
+            border-bottom:1px solid #aaa3;
+            &:last-child {border-bottom:none;}
+        }
+        & li:hover {
+            background-color:#666;
+            cursor:pointer;
+        }
+        & li:active {background-color:#888;}
+        &:has(li:active) {display:block;}
+    }
+}
