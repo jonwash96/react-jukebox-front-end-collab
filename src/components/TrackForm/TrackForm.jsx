@@ -61,6 +61,15 @@ export default function TrackForm({
     if (closeForm) closeForm();
   }
 
+  // cancel should exit edit mode and close the form
+  function handleCancel() {
+    setSelected(null);
+    setFormData({ title: "", artist: "" });
+    if (closeForm) closeForm();
+  }
+
+  const isEditMode = Boolean(selected);
+
   return (
     <form onSubmit={handleSubmit}>
       <h2>Add New Track</h2>
