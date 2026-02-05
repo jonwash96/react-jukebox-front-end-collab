@@ -81,14 +81,29 @@ function App() {
         }
     }
 
+    /**
+     * Update existing track:
+     * - call API via trackService.update
+     * - replace updated track in local state
+     * - close form
+     */
     const handleUpdate = async (track) => {
-        console.log("@handleUpdate", id);
+        // console.log("@handleUpdate", id);
         try {
-            const updatedTrack = await trackService.update(track, {new:true});
+            const updatedTrack = await trackService.update(track);
             if (!updatedTrack) throw new Error("Update Track Failed! Please try again later.");
-            setSelected(updatedTrack);
-            setShowEditModal(false);
-            set
+
+            // replace the old track with the updated one in state
+            setTracks((prev) => prev.map((t) => (t._id === updatedTrack._id ? updatedTrack : t)))
+
+            // keep nowPlaying synced if you edited the track currently playing
+            if(nowPlaying?._id === updatedTrack._id) {
+                handleSelectSong(updatedTrack)
+            }
+
+            // close form
+            setSelected(null)
+            setShowEditModal(false)
         } catch (err) {
             console.error(err);
         }
