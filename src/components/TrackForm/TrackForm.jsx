@@ -94,7 +94,13 @@ export default function TrackForm({
         required
       />
 
-      <button type="submit">Create Track</button>
+      <button type="submit">
+        {isEditMode ? "Update Track" : "Create Track"}
+      </button>
+
+      <button type="button" onClick={handleCancel}>
+        Cancel
+      </button>
     </form>
   );
 }
