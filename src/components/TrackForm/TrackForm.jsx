@@ -39,6 +39,22 @@ export default function TrackForm({
     }));
   }
 
+  /**
+   * Submit:
+   * - if selected exists -> update
+   * - else -> create
+   */
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    if (selected) {
+      await handleUpdate(formData);
+      setSelected(null); // exit edit mode
+    } else {
+      await handleCreate(formData);
+    }
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <h2>Add New Track</h2>
