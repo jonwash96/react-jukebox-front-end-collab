@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 
 export default function TrackForm({
   selected, // track to edit or null
-  setSelected, // allows us to exit edit mode
+  setSelected, // function to clear selection (exit edit mode)
   handleCreate, // function from App.jsx for creating
   handleUpdate, // function from App.jsx for updating
+  closeForm, // optional: callback to hide the form
 }) {
   // this holds the values of our inputs (controlled form)
   const [formData, setFormData] = useState({
@@ -18,8 +19,8 @@ export default function TrackForm({
   useEffect(() => {
     if (selected) {
       setFormData({
-        title: selected.title || "",
-        artist: selected.artist || "",
+        title: selected.title ?? "",
+        artist: selected.artist ?? "",
         _id: selected._id, // important for update
       });
     } else {
@@ -29,6 +30,14 @@ export default function TrackForm({
       });
     }
   }, [selected]);
+
+  // updates state as user types
+  function handleChange(e) {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  }
 
   return (
     <form onSubmit={handleSubmit}>
