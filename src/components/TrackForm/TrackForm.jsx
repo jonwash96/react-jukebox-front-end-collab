@@ -53,6 +53,12 @@ export default function TrackForm({
     } else {
       await handleCreate(formData);
     }
+
+    // reset inputs after submit
+    setFormData({ title: "", artist: "" });
+
+    // Hide the form if App.jsx passed close function
+    if (closeForm) closeForm();
   }
 
   return (
