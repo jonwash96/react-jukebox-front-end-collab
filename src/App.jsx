@@ -39,7 +39,7 @@ function App() {
             if (!deletedTrack) throw new Error("Delete Track Failed! Please try again later.");
             setTracks(tracks.filter(track => track._id !== id));
 
-            // if we deleted the one playing, reset nowPlaying
+            // if we delete the one playing, reset nowPlaying
             if(nowPlaying?._id === id) {
                 setNowPlaying(initNowPlaying)
                 setIsPlaying(false)
@@ -48,11 +48,39 @@ function App() {
             console.error(err)
         }
     };
+
+    /**
+     * When edit is clicked in Tracklist:
+     * - store track in selected
+     * - show TrackForm
+     */
     const handleEdit = (track) => {
-        console.log("@handleEdit", track);
+        // console.log("@handleEdit", track);
         setSelected(track);
         setShowEditModal(true);
     }
+
+    /**
+     * Create a new track:
+     * - call API via trackservice.create
+     * - update local state so it appears immediately
+     * - close form
+     */
+    const handleCreate = async (trackData) => {
+        try {
+            const createdTrack = await trackService.create(trackData)
+            if(!createdTrack) throw new Error("Create Track Failed! Please try again.")
+
+            setTracks((prev) => [...prev, createdTrack])
+
+            // close form
+            setSelected(null)
+            setShowEditModal(false)
+        } catch (error) {
+            console.error(err);
+        }
+    }
+
     const handleUpdate = async (track) => {
         console.log("@handleUpdate", id);
         try {
