@@ -10,7 +10,7 @@ function App() {
     const initNowPlaying = {title:'', artist:'', duration:'0:00', albumArt:''};
     const [nowPlaying, setNowPlaying] = useState(initNowPlaying);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [selected, setSelected] = useState();
+    const [selected, setSelected] = useState(null);
     const [showEditModal, setShowEditModal] = useState(false);
 
     useEffect(() => {
@@ -18,7 +18,7 @@ function App() {
             console.log("@App | RUN useEffect")
             try {
                 const data = await trackService.index();
-                console.log("@App | Data: ", data)
+                // console.log("@App | Data: ", data)
                 setTracks(data);
                 if (data.length > 0) {
                     handleSelectSong(data[0]);
@@ -31,12 +31,19 @@ function App() {
         fetchData()
     },[])
 
+    // Delete a track
     const handleDelete =  async (id) => {
         console.log("@handleDelete", id);
         try {
             const deletedTrack = await trackService.deleteTrack(id);
             if (!deletedTrack) throw new Error("Delete Track Failed! Please try again later.");
             setTracks(tracks.filter(track => track._id !== id));
+
+            // if we deleted the one playing, reset nowPlaying
+            if(nowPlaying?._id === id) {
+                setNowPlaying(initNowPlaying)
+                setIsPlaying(false)
+            }
         } catch (err) {
             console.error(err)
         }
