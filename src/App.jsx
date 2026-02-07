@@ -73,15 +73,15 @@ function App() {
     const handleCreate = async (trackData) => {
         try {
             const createdTrack = await trackService.create(trackData);
-            if (!createdTrack)
-                throw new Error("Create Track Failed! Please try again.");
+            console.log("@handleCreate",createdTrack)
+            if (!createdTrack) {throw new Error("Create Track Failed! Please try again.")};
 
             setTracks((prev) => [...prev, createdTrack]);
 
             // close form
             setSelected(null);
             setShowEditModal(false);
-        } catch (error) {
+        } catch (err) {
             console.error(err);
         }
     };
@@ -153,7 +153,7 @@ function App() {
             {/* Form shown when showEditModal is true */}
             {showEditModal && (
                 <TrackForm
-                    track={selected}
+                    selected={selected}
                     setSelected={setSelected}
                     handleCreate={handleCreate}
                     handleUpdate={handleUpdate}
