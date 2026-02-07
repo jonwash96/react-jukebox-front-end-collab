@@ -30,7 +30,7 @@ export async function create(track) {
             body:JSON.stringify(track)
         })
 
-        return await res.json().track;
+        return await res.json();
     } catch (err) {
         console.error(err)
     }
@@ -57,7 +57,8 @@ export async function deleteTrack(id) {
             headers:{"Content-Type":"application/json"},
         });
 
-        return await res.json().deletedTrack
+        if (!res.ok) throw new Error("Failed to Delete Track.");
+        return true;
     } catch (err) {
         console.error(err)
     }

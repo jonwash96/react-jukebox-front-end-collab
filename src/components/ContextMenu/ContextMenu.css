@@ -13,7 +13,7 @@
     & ul.context-menu {
         display: none;
         position:absolute;
-        transform:translateX(-70%);
+        transform:translate(-100%, -70%);
         width:100px;
         background-color: #444;
         border-radius: 6px;
