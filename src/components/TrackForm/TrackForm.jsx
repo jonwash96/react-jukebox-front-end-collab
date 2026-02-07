@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function TrackForm({
   selected, // track to edit or null
@@ -7,29 +7,13 @@ export default function TrackForm({
   handleUpdate, // function from App.jsx for updating
   closeForm, // optional: callback to hide the form
 }) {
-  // this holds the values of our inputs (controlled form)
-  const [formData, setFormData] = useState({
-    title: "",
-    artist: "",
+  const buildFormData = (track) => ({
+    title: track?.title ?? "",
+    artist: track?.artist ?? "",
   });
 
-  // this runs whenever "selected" changes
-  // if selected has a track -> prefill inputs (edit mode)
-  // if selected is null -> clear inputs (create mode)
-  useEffect(() => {
-    if (selected) {
-      setFormData({
-        title: selected.title ?? "",
-        artist: selected.artist ?? "",
-        _id: selected._id, // important for update
-      });
-    } else {
-      setFormData({
-        title: "",
-        artist: "",
-      });
-    }
-  }, [selected]);
+  // this holds the values of our inputs (controlled form)
+  const [formData, setFormData] = useState(() => buildFormData(selected));
 
   // updates state as user types
   function handleChange(e) {
@@ -48,14 +32,14 @@ export default function TrackForm({
     e.preventDefault();
 
     if (selected) {
-      await handleUpdate(formData);
+      await handleUpdate({ ...formData, _id: selected._id });
       setSelected(null); // exit edit mode
     } else {
       await handleCreate(formData);
     }
 
     // reset inputs after submit
-    setFormData({ title: "", artist: "" });
+    setFormData(buildFormData());
 
     // Hide the form if App.jsx passed close function
     if (closeForm) closeForm();
@@ -64,7 +48,7 @@ export default function TrackForm({
   // cancel should exit edit mode and close the form
   function handleCancel() {
     setSelected(null);
-    setFormData({ title: "", artist: "" });
+    setFormData(buildFormData());
     if (closeForm) closeForm();
   }
 
@@ -72,7 +56,7 @@ export default function TrackForm({
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Add New Track</h2>
+      <h2>{isEditMode ? "Edit Track" : "Add New Track"}</h2>
 
       {/* title input */}
       <label>Title</label>

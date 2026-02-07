@@ -153,6 +153,7 @@ function App() {
             {/* Form shown when showEditModal is true */}
             {showEditModal && (
                 <TrackForm
+                    key={selected?._id ?? "create-track"}
                     selected={selected}
                     setSelected={setSelected}
                     handleCreate={handleCreate}

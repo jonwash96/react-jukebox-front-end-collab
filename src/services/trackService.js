@@ -1,12 +1,29 @@
-const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/tracks`;
+const API_URL = (import.meta.env.VITE_BACK_END_SERVER_URL || "http://localhost:3000")
+const BASE_URL = `${API_URL}/tracks`;
+
+async function handleResponse(res) {
+  if (!res.ok) {
+    throw new Error(`Request failed: ${res.status} ${res.statusText}`);
+  }
+
+  if (res.status === 204) return null;
+
+  const contentType = res.headers.get("content-type") || "";
+  if (!contentType.includes("application/json")) {
+    const text = await res.text();
+    throw new Error(
+      `Expected JSON response, got ${contentType || "unknown"}: ${text.slice(0, 80)}`,
+    );
+  }
+
+  return res.json();
+}
 
 export async function index() {
-    return fetch(BASE_URL)
-        .then(response => response.json())
-        .then(data => {
-            console.log("@trackSvc.index: ", data)
-            return data
-        })
+    const res = await fetch(BASE_URL);
+    const data = await handleResponse(res);
+    console.log("@trackSvc.index: ", data);
+    return data;
 }
 
 export async function showOne(id) {
@@ -15,8 +32,7 @@ export async function showOne(id) {
             method:'GET',
             headers:{"Content-Type":"application/json"},
         })
-        if (!res) throw new Error("error")
-        return await res.json();
+        return await handleResponse(res);
     } catch (err) {
         console.error(err)
     }
@@ -30,7 +46,7 @@ export async function create(track) {
             body:JSON.stringify(track)
         })
 
-        return await res.json();
+        return await handleResponse(res);
     } catch (err) {
         console.error(err)
     }
@@ -44,7 +60,7 @@ export async function update(track) {
             body:JSON.stringify(track)
         });
 
-        return await res.json().updatedTrack;
+        return await handleResponse(res);
     } catch (err) {
         console.error(err)
     }
@@ -57,7 +73,7 @@ export async function deleteTrack(id) {
             headers:{"Content-Type":"application/json"},
         });
 
-        if (!res.ok) throw new Error("Failed to Delete Track.");
+        await handleResponse(res);
         return true;
     } catch (err) {
         console.error(err)
