@@ -35,7 +35,7 @@ export default function NowPlaying({ track, crud, isPlaying, setIsPlaying }) {
             <div className="current">{progress}</div>
             <div className="duration">{track.duration || 0}</div>
             <div className="progress-bar">
-              <input type="range" value={progress} max={track.duration || 0} />
+              <input type="range" readOnly value={progress} max={track.duration || 0} />
             </div>
           </div>
           <div className="playback-controls">
