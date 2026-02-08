@@ -1,0 +1,33 @@
+#track-form-modal form {
+  display: flex;
+  flex-direction: column;
+  width: 360px;
+
+  & label {
+    text-align: left;
+  }
+
+  & input {
+    height: 2em;
+    margin-bottom: 1em;
+  }
+
+  & button {
+    margin-bottom: 1em;
+  }
+}
+
+#track-form-modal {
+  border-radius: 6px;
+  padding: 2em;
+}
+
+#track-form-modal::backdrop {
+  background-color: #0015;
+}
+
+@media screen and (max-width:480px) {
+  #track-form-modal form {
+    width: 80vw;
+  }
+}

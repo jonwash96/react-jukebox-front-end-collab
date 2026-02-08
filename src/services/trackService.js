@@ -20,62 +20,61 @@ async function handleResponse(res) {
 }
 
 export async function index() {
-    const res = await fetch(BASE_URL);
-    const data = await handleResponse(res);
-    console.log("@trackSvc.index: ", data);
-    return data;
+  const res = await fetch(BASE_URL);
+  const data = await handleResponse(res);
+  return data;
 }
 
 export async function showOne(id) {
-    try {
-        const res = await fetch(BASE_URL+'/'+id, {
-            method:'GET',
-            headers:{"Content-Type":"application/json"},
-        })
-        return await handleResponse(res);
-    } catch (err) {
-        console.error(err)
-    }
+  try {
+    const res = await fetch(BASE_URL + '/' + id, {
+      method: 'GET',
+      headers: { "Content-Type": "application/json" },
+    })
+    return await handleResponse(res);
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 export async function create(track) {
-    try {
-        const res = await fetch(BASE_URL, {
-            method:'POST',
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify(track)
-        })
+  try {
+    const res = await fetch(BASE_URL, {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(track)
+    })
 
-        return await handleResponse(res);
-    } catch (err) {
-        console.error(err)
-    }
+    return await handleResponse(res);
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 export async function update(track) {
-    try {
-        const res = await fetch(`${BASE_URL}/${track._id}`, {
-            method:'PUT',
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify(track)
-        });
+  try {
+    const res = await fetch(`${BASE_URL}/${track._id}`, {
+      method: 'PUT',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(track)
+    });
 
-        return await handleResponse(res);
-    } catch (err) {
-        console.error(err)
-    }
+    return await handleResponse(res);
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 export async function deleteTrack(id) {
-    try {
-        const res = await fetch(BASE_URL+'/'+id, {
-            method:'DELETE',
-            headers:{"Content-Type":"application/json"},
-        });
+  try {
+    const res = await fetch(BASE_URL + '/' + id, {
+      method: 'DELETE',
+      headers: { "Content-Type": "application/json" },
+    });
 
-        await handleResponse(res);
-        return true;
-    } catch (err) {
-        console.error(err)
-    }
+    await handleResponse(res);
+    return true;
+  } catch (err) {
+    console.error(err)
+  }
 }
